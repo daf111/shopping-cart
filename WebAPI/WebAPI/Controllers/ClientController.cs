@@ -16,10 +16,27 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(new Dictionary<string, int>
+            SqlConnection conexion = new SqlConnection(@"Data Source=DESKTOP-3B107HD\SQLEXPRESS;Initial Catalog=ShoppingCart;Integrated Security=True");
+            conexion.Open();
+
+            string SQL_STATEMENT = "select id, name, email, birth_day FROM client ORDER BY name ASC";
+            SqlCommand cmd = new SqlCommand(SQL_STATEMENT, conexion);
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
+            Dictionary<string, string> dictionary;
+
+            while (reader.Read())
             {
-                {"total", 10}
-            });
+                dictionary = new Dictionary<string, string>();
+                dictionary.Add("id", reader.GetInt32(0).ToString());
+                dictionary.Add("name", reader.GetString(1));
+                dictionary.Add("email", reader.GetString(2));
+                dictionary.Add("birthDate", reader.GetDateTime(3).ToString());
+                list.Add(dictionary);
+            }
+
+            return Ok(list);
         }
 
         [HttpPost]
