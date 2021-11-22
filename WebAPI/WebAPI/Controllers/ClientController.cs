@@ -107,7 +107,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Post(int id, string n, string e, DateTime b)
+        public IActionResult Put(int id, string n, string e, DateTime b)
         {
             string error = "";
 
